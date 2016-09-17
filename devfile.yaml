@@ -1,0 +1,68 @@
+schemaVersion: 2.1.0
+metadata:
+  generateName: hello-world
+attributes:
+  controller.devfile.io/storage-type: per-user
+projects:
+  - attributes:
+      source-origin: branch
+    name: openwrt
+    git:
+      remotes:
+        origin: https://github.com/openwrt/openwrt.git
+      checkoutFrom:
+        revision: v23.05.0-rc1
+  - attributes: {}
+    name: hello-world
+    git:
+      remotes:
+        origin: https://github.com/olexii4/helloworld.git
+components:
+  - name: runtime
+    container:
+      image: docker.io/olexii4dockerid/openwrt_builder:ubi8
+      memoryLimit: 10G
+      memoryRequest: 512Mi
+      cpuRequest: 1000m
+      cpuLimit: 5000m
+commands:
+  - id: installpackagedefinitions
+    exec:
+      label: "install all its package definitions"
+      component: runtime
+      workingDir: ${PROJECTS_ROOT}/openwrt
+      commandLine: "scripts/feeds update -a -f && scripts/feeds install -a -f"
+      group:
+        kind: build
+  - id: linkhelloworldpackage
+    exec:
+      label: "link hello-world package"
+      component: runtime
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "ln -s '/helloword/contrib/package/helloworld' '/projects/openwrt/package/helloworld'"
+      group:
+        kind: build
+  - id: linkconfigfile
+    exec:
+      label: "link config file"
+      component: runtime
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "ln -s '/helloword/contrib/.config' '/projects/openwrt/.config'"
+      group:
+        kind: build
+  - id: menuconfig
+    exec:
+      label: "Select configuration for the toolchain"
+      component: runtime
+      workingDir: ${PROJECTS_ROOT}/openwrt
+      commandLine: "make menuconfig"
+      group:
+        kind: build
+  - id: build
+    exec:
+      label: "Build"
+      component: runtime
+      workingDir: ${PROJECTS_ROOT}/openwrt
+      commandLine: "make -j4"
+      group:
+        kind: build
