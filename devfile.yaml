@@ -36,18 +36,30 @@ commands:
         kind: build
   - id: linkhelloworldpackage
     exec:
-      label: "link hello-world package"
+      label: "link helloworld package"
       component: runtime
-      workingDir: ${PROJECT_SOURCE}
-      commandLine: "ln -sf 'hello-word/contrib/package/helloworld' 'openwrt/package/helloworld'"
+      commandLine: "ln -sf /projects/hello-world/package/helloworld /projects/openwrt/package/helloworld"
+      group:
+        kind: build
+  - id: unlinkhelloworldpackage
+    exec:
+      label: "unlink helloworld package"
+      component: runtime
+      commandLine: "unlink /projects/openwrt/package/helloworld"
       group:
         kind: build
   - id: linkconfigfile
     exec:
       label: "link config file"
       component: runtime
-      workingDir: ${PROJECT_SOURCE}
-      commandLine: "ln -sf 'hello-word/contrib/.config' 'openwrt/.config'"
+      commandLine: "ln -sf /projects/hello-world/.config /projects/openwrt/.config"
+      group:
+        kind: build
+  - id: unlinkconfigfile
+    exec:
+      label: "unlink config file"
+      component: runtime
+      commandLine: "unlink openwrt/.config"
       group:
         kind: build
   - id: menuconfig
@@ -63,7 +75,7 @@ commands:
       label: "Build helloworld package"
       component: runtime
       workingDir: ${PROJECTS_ROOT}/openwrt
-      commandLine: "make package/helloworld/{clean,compile} V=s TARGET_OPTIMIZATION='-g -O0'"
+      commandLine: "make package/helloworld/{clean,compile} TARGET_OPTIMIZATION='-g -O0'"
       group:
         kind: build
   - id: buildallpackages

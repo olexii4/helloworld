@@ -14,7 +14,6 @@ PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/uclibc++.mk
 include $(INCLUDE_DIR)/package.mk
-include $(INCLUDE_DIR)/cmake.mk
 
 # This is the package section. It specifies the package details.
 define Package/$(PKG_NAME)
