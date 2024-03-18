@@ -58,9 +58,17 @@ commands:
       commandLine: "make menuconfig"
       group:
         kind: build
-  - id: build
+  - id: buildhelloworldpackage
     exec:
-      label: "Build"
+      label: "Build helloworld package"
+      component: runtime
+      workingDir: ${PROJECTS_ROOT}/openwrt
+      commandLine: "make package/helloworld/{clean,compile} V=s TARGET_OPTIMIZATION='-g -O0'"
+      group:
+        kind: build
+  - id: buildallpackages
+    exec:
+      label: "Build all packages and the kernel"
       component: runtime
       workingDir: ${PROJECTS_ROOT}/openwrt
       commandLine: "make -j4"
