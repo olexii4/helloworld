@@ -39,7 +39,7 @@ commands:
       label: "link hello-world package"
       component: runtime
       workingDir: ${PROJECT_SOURCE}
-      commandLine: "ln -s '/helloword/contrib/package/helloworld' '/projects/openwrt/package/helloworld'"
+      commandLine: "ln -sf 'hello-word/contrib/package/helloworld' 'openwrt/package/helloworld'"
       group:
         kind: build
   - id: linkconfigfile
@@ -47,7 +47,7 @@ commands:
       label: "link config file"
       component: runtime
       workingDir: ${PROJECT_SOURCE}
-      commandLine: "ln -s '/helloword/contrib/.config' '/projects/openwrt/.config'"
+      commandLine: "ln -sf 'hello-word/contrib/.config' 'openwrt/.config'"
       group:
         kind: build
   - id: menuconfig
